@@ -1,0 +1,27 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Task Manager Application</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div>
+            <input
+                id="taskName"
+                type="text"
+                placeholder="Add the task name..."
+            />
+            <!-- <input id="taskType" type="text" placeholder="Add the task type..." /> -->
+            <select id="taskType">
+                <option value="Task">Task</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+            </select>
+            <button>Add</button>
+        </div>
+
+        <ul id="taskList"></ul>
+
+        <script src="main.js"></script>
+    </body>
+</html>
