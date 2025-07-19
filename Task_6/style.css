@@ -1,0 +1,9 @@
+body {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: antiquewhite;
+}
+
+input {
+    width: 90%;
+}
