@@ -1,7 +1,14 @@
-const btn = document.querySelector('button');
-const display = document.getElementById('display');
+const events = [];
 
-btn.addEventListener('click', () => {
+const addEventBtn = document.getElementById('addEvent');
+const searchBtn = document.getElementById('search');
+const display = document.getElementById('display');
+const searchedEvents = document.getElementById('searchedEvents');
+
+let addId = 1;
+let searchId = 1;
+
+addEventBtn.addEventListener('click', () => {
     let eventNameInput = document.getElementById('eventName');
     let eventDurationInput = document.getElementById('eventDuration');
 
@@ -11,27 +18,66 @@ btn.addEventListener('click', () => {
     if (eventName === '') {
         alert('Please provide the event name');
         return;
-    } else if (eventDuration <= 0) {
+    } else if (eventDuration === 0) {
         alert('Please provide the event duration');
         return;
     }
-    let id = 1;
-    id = setInterval(() => {
-        display.innerHTML = ``;
-        display.innerHTML = `<h3>Countdown to ${eventName}!</h3>`;
-        let sec = eventDuration % 60;
-        let min = Math.floor(eventDuration / 60) % 60;
-        let hr = Math.floor(eventDuration / 3600) % 60;
-        display.innerHTML += `${hr} : ${min} : ${sec}`;
-        eventDuration--;
-        if (eventDuration < 0) {
-            clearInterval(id);
-            display.innerHTML = '';
-            alert(`It's time for ${eventName} event!!`);
+    const event = {
+        name: eventName,
+        duration: eventDuration,
+        intervalId: null,
+    };
+    clearInterval(searchId);
+
+    const eventDisplay = document.createElement('div');
+    display.appendChild(eventDisplay);
+    event.intervalId = events[events.length - 1];
+    addId = setInterval(() => {
+        eventDisplay.innerHTML = ``;
+        eventDisplay.innerText += `Countdown to ${event.name}!\nTime Remaining: `;
+        let sec = event.duration % 60;
+        let min = Math.floor(event.duration / 60) % 60;
+        let hr = Math.floor(event.duration / 3600) % 60;
+        eventDisplay.innerText += `${hr} : ${min} : ${sec}\n`;
+        event.duration--;
+    }, 1000);
+    setTimeout(() => {
+        clearInterval(event.intervalId);
+        eventDisplay.remove();
+        eventDisplay.innerHTML = '';
+        alert(`It's time for ${event.name} event!!`);
+    }, eventDuration * 1000 + 1000);
+    events.push(event);
+    eventNameInput.value = '';
+    eventDurationInput.value = '';
+});
+
+searchBtn.addEventListener('click', () => {
+    let eventNameInput = document.getElementById('searchByName');
+
+    let eventName = eventNameInput.value.trim();
+
+    if (eventName === '') {
+        alert('Please provide the event name you are searching for');
+        return;
+    }
+    searchId = setInterval(() => {
+        searchedEvents.innerText = ``;
+        const filteredEvents = events.filter(
+            (el) => el.name === eventName && el.duration >= 0
+        );
+        filteredEvents.forEach((el) => {
+            searchedEvents.innerText += `Countdown to ${el.name}!\nTime Remaining: `;
+            let sec = el.duration % 60;
+            let min = Math.floor(el.duration / 60) % 60;
+            let hr = Math.floor(el.duration / 3600) % 60;
+            searchedEvents.innerText += `${hr} : ${min} : ${sec}\n`;
+        });
+        if (!filteredEvents.length) {
+            clearInterval(searchId);
+            searchedEvents.innerHTML = '';
         }
     }, 1000);
 
     eventNameInput.value = '';
-    eventDurationInput.value = '';
-    return;
 });
