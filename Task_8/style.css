@@ -1,0 +1,14 @@
+body {
+    padding: 10px;
+    background-color: rgb(182, 209, 245);
+}
+div {
+    padding: 15px;
+    margin: 10px;
+}
+
+.single-line {
+    white-space: nowrap; /*Prevents line breaks */
+    overflow: hidden; /* Hides overflow text */
+    text-overflow: ellipsis; /* Adds "..." at the end */
+}
